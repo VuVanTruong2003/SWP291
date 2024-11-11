@@ -1,0 +1,111 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="model.Group" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<html>
+    <head>
+        <title>Add Department</title>
+        <!-- Thêm Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
+        <style>
+            /* CSS tùy chỉnh */
+            .custom-select {
+                width: 150px; /* Chiều rộng tùy chỉnh cho select */
+            }
+            .form-container {
+                max-width: 600px; /* Giới hạn chiều rộng form */
+                margin: 50px auto; /* Căn giữa form với khoảng cách trên */
+            }
+            .content {
+                padding-top: 100px; /* Cách đều từ sidebar */
+            }
+        </style>
+    </head>
+    <body>
+        <div id="layout" class="theme-cyan">
+
+            <jsp:include page="../common/pageLoader.jsp"></jsp:include>
+
+                <div id="wrapper">
+
+                <jsp:include page="../common/topNavbar.jsp"></jsp:include>
+                <jsp:include page="../common/sidebar.jsp"></jsp:include>
+                    <div class="content">
+                        <div class="form-container">
+                        <c:if test="${not empty sessionScope.errorMessage}">
+                            <div class="alert alert-danger">
+                                ${sessionScope.errorMessage}
+                            </div>
+                            <!-- Xóa thông báo sau khi hiển thị -->
+                            <c:remove var="errorMessage" scope="session"/>
+                        </c:if>
+
+                        <form action="department?action=add" method="post">
+                            <div class="form-group">
+                                <label for="code">Code:</label>
+                                <input type="text" id="code" name="code" class="form-control" value="${sessionScope.code != null ? sessionScope.code : ''}">
+                                <c:remove var="code" scope="session"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name" class="form-control" value="${sessionScope.name != null ? sessionScope.name : ''}">
+                                <c:remove var="name" scope="session"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="details">Detail:</label>
+                                <textarea id="details" name="details" class="form-control">${sessionScope.details != null ? sessionScope.details : ''}</textarea>
+                                <c:remove var="details" scope="session"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status:</label><br>
+                                <!-- Checkbox 'Activate' sẽ được chọn mặc định nếu sessionScope.status chưa được đặt -->
+                                <input type="checkbox" id="active" name="status" value="1" ${sessionScope.status == null || sessionScope.status == 1 ? 'checked' : ''}>
+                                <label for="active">Activate</label><br>
+                                <input type="checkbox" id="inactive" name="status" value="0" ${sessionScope.status != null && sessionScope.status == 0 ? 'checked' : ''}>
+                                <label for="inactive">Deactivate</label>
+                                <c:remove var="status" scope="session"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="parent_department">Phòng ban cha:</label>
+                                <select id="parent_department" name="parent_department" class="form-control custom-select">
+                                    <option value="">Parent</option>
+                                    <c:forEach var="parent" items="${listParentDepartments}">
+                                        <option value="${parent.id}" ${sessionScope.parent_department != null && sessionScope.parent_department == parent.id ? 'selected' : ''}>
+                                            ${parent.name}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                                <c:remove var="parent_department" scope="session"/>
+                            </div>
+
+                            <div class="form-actions text-center">
+                                <button type="submit" class="btn btn-success">Add Department</button>
+                                <a href="${pageContext.request.contextPath}/admin/department" class="btn btn-secondary">Back</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thêm jQuery và Bootstrap JS nếu cần -->
+        <script src="${pageContext.request.contextPath}/assets/bundles/libscripts.bundle.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/bundles/dataTables.bundle.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/bundles/mainscripts.bundle.js"></script>
+        <script>
+            document.getElementById("active").addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById("inactive").checked = false;
+                }
+            });
+
+            document.getElementById("inactive").addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById("active").checked = false;
+                }
+            });
+        </script>
+    </body>
+</html>

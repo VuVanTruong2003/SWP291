@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/view/common/ErrorPages/500Error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/view/common/ErrorPages/404Error.jsp</location>
+    </error-page>
+    <filter>
+        <filter-name>RoleFilter</filter-name>
+        <filter-class>filter.RoleFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>RoleFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>controller.UserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GroupController</servlet-name>
+        <servlet-class>controller.GroupController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DepartmentController</servlet-name>
+        <servlet-class>controller.DepartmentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SettingController</servlet-name>
+        <servlet-class>controller.SettingController</servlet-class>
+    </servlet>
+</web-app>
