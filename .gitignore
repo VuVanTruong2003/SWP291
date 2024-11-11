@@ -1,8 +1,6 @@
 #ignore ALL log, class files
 *.log
 *.class
-*.properties
-/private/private.properties
 /private/private.xml
 context.xml
 
